@@ -122,10 +122,144 @@ export default async function CoursePage({
                       <div className="text-2xl font-bold text-green-600">{course.enrollments.length}</div>
                       <div className="text-sm text-gray-600">Students</div>
                     </div>
-            <Link href="/auth/signin">
-              <Button className="flex-1">Sign in to Enroll</Button>
-            </Link>
-          )}
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-purple-600">
+                        {course.price === 0 ? 'Free' : `$${course.price}`}
+                      </div>
+                      <div className="text-sm text-gray-600">Price</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-orange-600">
+                        {Math.round(progressPercentage)}%
+                      </div>
+                      <div className="text-sm text-gray-600">Complete</div>
+                    </div>
+                  </div>
+
+                  {/* Lessons Preview */}
+                  <div className="mb-6">
+                    <h3 className="text-xl font-bold mb-4">Course Content</h3>
+                    <div className="space-y-2">
+                      {course.lessons.slice(0, 5).map((lesson, index) => {
+                        const isCompleted = progress.some(p => p.lessonId === lesson.id && p.completed)
+                        const hasAccess = isEnrolled || isInstructor
+
+                        return (
+                          <div
+                            key={lesson.id}
+                            className={`flex items-center justify-between p-4 rounded-lg border ${
+                              hasAccess ? 'bg-white border-gray-200' : 'bg-gray-50 border-gray-100'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
+                                isCompleted
+                                  ? 'bg-green-500 text-white'
+                                  : hasAccess
+                                  ? 'bg-blue-500 text-white'
+                                  : 'bg-gray-300 text-gray-600'
+                              }`}>
+                                {isCompleted ? '✓' : index + 1}
+                              </div>
+                              <div>
+                                <p className={`font-medium ${
+                                  hasAccess ? 'text-gray-900' : 'text-gray-500'
+                                }`}>
+                                  {lesson.title}
+                                </p>
+                                {lesson.videoUrl && (
+                                  <p className="text-sm text-gray-500">Video lesson</p>
+                                )}
+                              </div>
+                            </div>
+                            {hasAccess ? (
+                              <Link href={`/courses/${id}/lessons/${lesson.id}`}>
+                                <Button variant="outline" size="sm">
+                                  {isCompleted ? 'Review' : 'Watch'}
+                                </Button>
+                              </Link>
+                            ) : (
+                              <div className="text-sm text-gray-500">🔒 Enroll to access</div>
+                            )}
+                          </div>
+                        )
+                      })}
+
+                      {course.lessons.length > 5 && (
+                        <div className="text-center py-4">
+                          <p className="text-gray-600">
+                            And {course.lessons.length - 5} more lessons...
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Enrollment Card */}
+                <div className="lg:col-span-1">
+                  <Card className="sticky top-6">
+                    <CardHeader>
+                      <CardTitle>Enrollment</CardTitle>
+                      <CardDescription>
+                        {isEnrolled ? 'You are enrolled in this course' : 'Join this course to start learning'}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {isEnrolled ? (
+                        <div className="space-y-4">
+                          {/* Progress */}
+                          <div>
+                            <div className="flex justify-between text-sm mb-2">
+                              <span>Your Progress</span>
+                              <span>{Math.round(progressPercentage)}%</span>
+                            </div>
+                            <Progress value={progressPercentage} className="h-3" />
+                            <p className="text-xs text-gray-600 mt-1">
+                              {completedLessons} of {totalLessons} lessons completed
+                            </p>
+                          </div>
+
+                          <Link href={`/courses/${id}/lessons/${course.lessons[0]?.id}`}>
+                            <Button className="w-full">
+                              {completedLessons === 0 ? 'Start Learning' : 'Continue Learning'}
+                            </Button>
+                          </Link>
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          {course.price === 0 ? (
+                            <Button className="w-full" id="enroll-btn">
+                              Enroll Now - Free
+                            </Button>
+                          ) : (
+                            <div className="space-y-4">
+                              <div className="text-center">
+                                <div className="text-3xl font-bold text-green-600">${course.price}</div>
+                                <div className="text-sm text-gray-600">One-time payment</div>
+                              </div>
+                              <Button className="w-full" id="purchase-btn">
+                                Purchase Course
+                              </Button>
+                            </div>
+                          )}
+
+                          {!session && (
+                            <div className="text-center text-sm text-gray-600">
+                              <Link href="/auth/signin" className="text-blue-600 hover:underline">
+                                Sign in
+                              </Link>
+                              {' '}to enroll in courses
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
