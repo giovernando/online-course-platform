@@ -15,6 +15,18 @@ async function main() {
     },
   })
 
+  // Create additional instructor
+  const instructor2 = await prisma.user.upsert({
+    where: { email: 'sarah@example.com' },
+    update: {},
+    create: {
+      name: 'Sarah Johnson',
+      email: 'sarah@example.com',
+      password: '$2b$10$dummy.hash.for.demo',
+      role: 'INSTRUCTOR',
+    },
+  })
+
   // Create courses
   const course1 = await prisma.course.upsert({
     where: { id: 'course-1' },
@@ -173,7 +185,7 @@ async function main() {
       description: 'Master the fundamentals of user interface and user experience design',
       price: 59.99,
       thumbnail: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=250&fit=crop',
-      instructorId: instructor.id,
+      instructorId: instructor2.id,
       lessons: {
         create: [
           {
@@ -231,6 +243,341 @@ async function main() {
           {
             title: 'Native Features',
             videoUrl: 'https://example.com/video24.mp4',
+            order: 4,
+          },
+        ],
+      },
+    },
+  })
+
+  // Add more courses
+  const course7 = await prisma.course.upsert({
+    where: { id: 'course-7' },
+    update: {},
+    create: {
+      id: 'course-7',
+      title: 'Full-Stack Web Development',
+      description: 'Complete guide to building full-stack applications with MERN stack',
+      price: 129.99,
+      thumbnail: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=400&h=250&fit=crop',
+      instructorId: instructor.id,
+      lessons: {
+        create: [
+          {
+            title: 'MERN Stack Overview',
+            videoUrl: 'https://example.com/video25.mp4',
+            order: 1,
+          },
+          {
+            title: 'MongoDB Fundamentals',
+            videoUrl: 'https://example.com/video26.mp4',
+            order: 2,
+          },
+          {
+            title: 'Express.js API Development',
+            videoUrl: 'https://example.com/video27.mp4',
+            order: 3,
+          },
+          {
+            title: 'React Frontend Integration',
+            videoUrl: 'https://example.com/video28.mp4',
+            order: 4,
+          },
+        ],
+      },
+    },
+  })
+
+  const course8 = await prisma.course.upsert({
+    where: { id: 'course-8' },
+    update: {},
+    create: {
+      id: 'course-8',
+      title: 'DevOps with Docker & Kubernetes',
+      description: 'Learn containerization and orchestration for scalable applications',
+      price: 89.99,
+      thumbnail: 'https://images.unsplash.com/photo-1618477388954-7852f32655ec?w=400&h=250&fit=crop',
+      instructorId: instructor2.id,
+      lessons: {
+        create: [
+          {
+            title: 'Introduction to Docker',
+            videoUrl: 'https://example.com/video29.mp4',
+            order: 1,
+          },
+          {
+            title: 'Container Orchestration',
+            videoUrl: 'https://example.com/video30.mp4',
+            order: 2,
+          },
+          {
+            title: 'Kubernetes Fundamentals',
+            videoUrl: 'https://example.com/video31.mp4',
+            order: 3,
+          },
+          {
+            title: 'CI/CD Pipelines',
+            videoUrl: 'https://example.com/video32.mp4',
+            order: 4,
+          },
+        ],
+      },
+    },
+  })
+
+  const course9 = await prisma.course.upsert({
+    where: { id: 'course-9' },
+    update: {},
+    create: {
+      id: 'course-9',
+      title: 'Machine Learning with Python',
+      description: 'Comprehensive introduction to machine learning algorithms and implementation',
+      price: 149.99,
+      thumbnail: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=250&fit=crop',
+      instructorId: instructor.id,
+      lessons: {
+        create: [
+          {
+            title: 'ML Fundamentals',
+            videoUrl: 'https://example.com/video33.mp4',
+            order: 1,
+          },
+          {
+            title: 'Supervised Learning',
+            videoUrl: 'https://example.com/video34.mp4',
+            order: 2,
+          },
+          {
+            title: 'Neural Networks',
+            videoUrl: 'https://example.com/video35.mp4',
+            order: 3,
+          },
+          {
+            title: 'Model Deployment',
+            videoUrl: 'https://example.com/video36.mp4',
+            order: 4,
+          },
+        ],
+      },
+    },
+  })
+
+  const course10 = await prisma.course.upsert({
+    where: { id: 'course-10' },
+    update: {},
+    create: {
+      id: 'course-10',
+      title: 'Cybersecurity Fundamentals',
+      description: 'Learn essential cybersecurity concepts and best practices',
+      price: 79.99,
+      thumbnail: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=250&fit=crop',
+      instructorId: instructor2.id,
+      lessons: {
+        create: [
+          {
+            title: 'Security Principles',
+            videoUrl: 'https://example.com/video37.mp4',
+            order: 1,
+          },
+          {
+            title: 'Network Security',
+            videoUrl: 'https://example.com/video38.mp4',
+            order: 2,
+          },
+          {
+            title: 'Ethical Hacking',
+            videoUrl: 'https://example.com/video39.mp4',
+            order: 3,
+          },
+          {
+            title: 'Security Tools',
+            videoUrl: 'https://example.com/video40.mp4',
+            order: 4,
+          },
+        ],
+      },
+    },
+  })
+
+  const course11 = await prisma.course.upsert({
+    where: { id: 'course-11' },
+    update: {},
+    create: {
+      id: 'course-11',
+      title: 'Cloud Computing with AWS',
+      description: 'Master Amazon Web Services for scalable cloud solutions',
+      price: 109.99,
+      thumbnail: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=250&fit=crop',
+      instructorId: instructor.id,
+      lessons: {
+        create: [
+          {
+            title: 'AWS Fundamentals',
+            videoUrl: 'https://example.com/video41.mp4',
+            order: 1,
+          },
+          {
+            title: 'EC2 and Compute Services',
+            videoUrl: 'https://example.com/video42.mp4',
+            order: 2,
+          },
+          {
+            title: 'Storage Solutions',
+            videoUrl: 'https://example.com/video43.mp4',
+            order: 3,
+          },
+          {
+            title: 'Serverless Architecture',
+            videoUrl: 'https://example.com/video44.mp4',
+            order: 4,
+          },
+        ],
+      },
+    },
+  })
+
+  const course12 = await prisma.course.upsert({
+    where: { id: 'course-12' },
+    update: {},
+    create: {
+      id: 'course-12',
+      title: 'Blockchain Development',
+      description: 'Build decentralized applications with Ethereum and smart contracts',
+      price: 119.99,
+      thumbnail: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop',
+      instructorId: instructor2.id,
+      lessons: {
+        create: [
+          {
+            title: 'Blockchain Basics',
+            videoUrl: 'https://example.com/video45.mp4',
+            order: 1,
+          },
+          {
+            title: 'Ethereum Network',
+            videoUrl: 'https://example.com/video46.mp4',
+            order: 2,
+          },
+          {
+            title: 'Smart Contracts',
+            videoUrl: 'https://example.com/video47.mp4',
+            order: 3,
+          },
+          {
+            title: 'DApp Development',
+            videoUrl: 'https://example.com/video48.mp4',
+            order: 4,
+          },
+        ],
+      },
+    },
+  })
+
+  // Free courses
+  const course13 = await prisma.course.upsert({
+    where: { id: 'course-13' },
+    update: {},
+    create: {
+      id: 'course-13',
+      title: 'Introduction to Programming',
+      description: 'Perfect starting point for beginners learning to code',
+      price: 0,
+      thumbnail: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop',
+      instructorId: instructor.id,
+      lessons: {
+        create: [
+          {
+            title: 'What is Programming?',
+            videoUrl: 'https://example.com/video49.mp4',
+            order: 1,
+          },
+          {
+            title: 'Your First Program',
+            videoUrl: 'https://example.com/video50.mp4',
+            order: 2,
+          },
+          {
+            title: 'Basic Concepts',
+            videoUrl: 'https://example.com/video51.mp4',
+            order: 3,
+          },
+          {
+            title: 'Next Steps',
+            videoUrl: 'https://example.com/video52.mp4',
+            order: 4,
+          },
+        ],
+      },
+    },
+  })
+
+  const course14 = await prisma.course.upsert({
+    where: { id: 'course-14' },
+    update: {},
+    create: {
+      id: 'course-14',
+      title: 'Web Development Basics',
+      description: 'Learn HTML, CSS, and JavaScript fundamentals for free',
+      price: 0,
+      thumbnail: 'https://images.unsplash.com/photo-1545670723-196ed0954986?w=400&h=250&fit=crop',
+      instructorId: instructor2.id,
+      lessons: {
+        create: [
+          {
+            title: 'HTML Structure',
+            videoUrl: 'https://example.com/video53.mp4',
+            order: 1,
+          },
+          {
+            title: 'CSS Styling',
+            videoUrl: 'https://example.com/video54.mp4',
+            order: 2,
+          },
+          {
+            title: 'JavaScript Basics',
+            videoUrl: 'https://example.com/video55.mp4',
+            order: 3,
+          },
+          {
+            title: 'Building Your First Website',
+            videoUrl: 'https://example.com/video56.mp4',
+            order: 4,
+          },
+        ],
+      },
+    },
+  })
+
+  const course15 = await prisma.course.upsert({
+    where: { id: 'course-15' },
+    update: {},
+    create: {
+      id: 'course-15',
+      title: 'Digital Marketing Essentials',
+      description: 'Free course covering the fundamentals of digital marketing',
+      price: 0,
+      thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop',
+      instructorId: instructor.id,
+      lessons: {
+        create: [
+          {
+            title: 'Marketing Fundamentals',
+            videoUrl: 'https://example.com/video57.mp4',
+            order: 1,
+          },
+          {
+            title: 'Social Media Marketing',
+            videoUrl: 'https://example.com/video58.mp4',
+            order: 2,
+          },
+          {
+            title: 'SEO Basics',
+            videoUrl: 'https://example.com/video59.mp4',
+            order: 3,
+          },
+          {
+            title: 'Content Marketing',
+            videoUrl: 'https://example.com/video60.mp4',
             order: 4,
           },
         ],
