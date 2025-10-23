@@ -35,6 +35,8 @@ export default function AddToWishlistButton({
           setInWishlist(false)
           onWishlistChange?.(false)
           toast.success(`"${courseTitle}" dihapus dari wishlist`)
+          // Dispatch custom event to update wishlist badge
+          window.dispatchEvent(new Event('wishlistUpdated'))
         } else {
           const error = await response.json()
           toast.error(error.error || "Gagal menghapus dari wishlist")
@@ -53,6 +55,8 @@ export default function AddToWishlistButton({
           setInWishlist(true)
           onWishlistChange?.(true)
           toast.success(`"${courseTitle}" ditambahkan ke wishlist`)
+          // Dispatch custom event to update wishlist badge
+          window.dispatchEvent(new Event('wishlistUpdated'))
         } else {
           const error = await response.json()
           toast.error(error.error || "Gagal menambahkan ke wishlist")
