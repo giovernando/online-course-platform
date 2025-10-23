@@ -28,7 +28,13 @@ export async function GET() {
       },
     })
 
-    return NextResponse.json(courses)
+    // Add category field to each course (since it's not included in the select)
+    const coursesWithCategory = courses.map((course: any) => ({
+      ...course,
+      category: course.category || 'Uncategorized', // Fallback for courses without category
+    }))
+
+    return NextResponse.json(coursesWithCategory)
   } catch (error) {
     console.error("Error fetching courses:", error)
     return NextResponse.json(
