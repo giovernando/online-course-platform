@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
 import Link from "next/link"
 import { Progress } from "@/components/ui/Progress"
+import MarkCompleteButton from "@/components/MarkCompleteButton"
 
 async function getLesson(courseId: string, lessonId: string, userId?: string) {
   const lesson = await prisma.lesson.findFirst({
@@ -55,7 +56,7 @@ export default async function LessonPage({
   const { id: courseId, lessonId } = await params
   const session = await getServerSession(authOptions)
 
-  const result = await getLesson(courseId, lessonId, session?.user?.id as string)
+  const result = await getLesson(courseId, lessonId, (session?.user as any)?.id)
 
   if (!result) {
     notFound()
@@ -68,13 +69,13 @@ export default async function LessonPage({
   const isEnrolled = session ? await prisma.enrollment.findUnique({
     where: {
       userId_courseId: {
-        userId: session.user.id as string,
+        userId: (session.user as any).id,
         courseId: courseId
       }
     }
   }) : null
 
-  const isInstructor = session && course.instructorId === session.user.id
+  const isInstructor = session && session.user && course.instructorId === (session.user as any).id
 
   if (!isEnrolled && !isInstructor) {
     return (
@@ -98,11 +99,11 @@ export default async function LessonPage({
 
   // Calculate progress
   const totalLessons = course.lessons.length
-  const currentLessonIndex = course.lessons.findIndex(l => l.id === lessonId)
-  const completedLessons = session?.user?.id ?
+  const currentLessonIndex = course.lessons.findIndex((l: any) => l.id === lessonId)
+  const completedLessons = (session?.user as any)?.id ?
     await prisma.progress.count({
       where: {
-        userId: session.user.id as string,
+        userId: (session.user as any).id,
         lesson: {
           courseId: courseId
         },
@@ -177,25 +178,12 @@ export default async function LessonPage({
                 )}
 
                 {/* Mark as Complete Button */}
-                {session && !userProgress?.completed && (
-                  <Button
-                    className="w-full"
-                    onClick={async () => {
-                      // This would be handled by a client component in real implementation
-                      'use client'
-                    }}
-                  >
-                    Mark as Complete
-                  </Button>
-                )}
-
-                {userProgress?.completed && (
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-                    <div className="text-green-600 font-semibold">✓ Lesson Completed</div>
-                    <p className="text-sm text-green-600 mt-1">
-                      Great job! You've completed this lesson.
-                    </p>
-                  </div>
+                {session && (
+                  <MarkCompleteButton
+                    lessonId={lessonId}
+                    courseId={courseId}
+                    isCompleted={userProgress?.completed || false}
+                  />
                 )}
               </CardContent>
             </Card>
@@ -209,9 +197,9 @@ export default async function LessonPage({
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {course.lessons.map((courseLesson, index) => {
+                  {course.lessons.map((courseLesson: any, index: number) => {
                     const isCurrentLesson = courseLesson.id === lessonId
-                    const isCompleted = session?.user?.id ?
+                    const isCompleted = (session?.user as any)?.id ?
                       // In real implementation, this would check progress
                       false : false
 

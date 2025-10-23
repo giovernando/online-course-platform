@@ -55,6 +55,8 @@ export default function AddToCartButton({
       if (response.ok) {
         setIsInCart(true)
         toast.success(`"${courseTitle}" berhasil ditambahkan ke keranjang`)
+        // Dispatch custom event to update cart badge
+        window.dispatchEvent(new Event('cartUpdated'))
       } else {
         toast.error(data.error || "Gagal menambahkan ke keranjang")
       }

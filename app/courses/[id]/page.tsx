@@ -6,6 +6,9 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
 import Link from "next/link"
 import { Progress } from "@/components/ui/Progress"
+import AddToCartButton from "@/components/AddToCartButton"
+import AddToWishlistButton from "@/components/AddToWishlistButton"
+import { Heart, ShoppingCart, CreditCard } from "lucide-react"
 import toast from "react-hot-toast"
 
 async function getCourse(id: string, userId?: string) {
@@ -29,6 +32,7 @@ async function getCourse(id: string, userId?: string) {
   // Get user enrollment and progress if logged in
   let enrollment = null
   let progress = []
+  let isInWishlist = false
 
   if (userId) {
     enrollment = await prisma.enrollment.findUnique({
@@ -53,9 +57,20 @@ async function getCourse(id: string, userId?: string) {
         }
       })
     }
+
+    // Check if course is in user's wishlist
+    const wishlistItem = await prisma.wishlist.findUnique({
+      where: {
+        userId_courseId: {
+          userId: userId,
+          courseId: id
+        }
+      }
+    })
+    isInWishlist = !!wishlistItem
   }
 
-  return { course, enrollment, progress }
+  return { course, enrollment, progress, isInWishlist }
 }
 
 export default async function CoursePage({
@@ -66,18 +81,18 @@ export default async function CoursePage({
   const { id } = await params
   const session = await getServerSession(authOptions)
 
-  const result = await getCourse(id, session?.user?.id as string)
+  const result = await getCourse(id, session?.user?.id)
 
   if (!result) {
     notFound()
   }
 
-  const { course, enrollment, progress } = result
+  const { course, enrollment, progress, isInWishlist } = result
 
   const isEnrolled = !!enrollment
-  const isInstructor = session && course.instructorId === session.user.id
+  const isInstructor = session && course.instructorId === (session.user as any)?.id
   const totalLessons = course.lessons.length
-  const completedLessons = progress.filter(p => p.completed).length
+  const completedLessons = progress.filter((p: any) => p.completed).length
   const progressPercentage = totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0
 
   return (
@@ -106,42 +121,44 @@ export default async function CoursePage({
                 {/* Course Info */}
                 <div className="lg:col-span-2">
                   <div className="mb-6">
-                    <h2 className="text-2xl font-bold mb-4">About This Course</h2>
-                    <p className="text-gray-700 leading-relaxed">
-                      {course.description || "No description available."}
-                    </p>
+                    <h2 className="text-2xl font-bold mb-4">Deskripsi Kelas</h2>
+                    <div className="prose prose-gray max-w-none">
+                      <p className="text-gray-700 leading-relaxed text-lg">
+                        {course.description || "Belum ada deskripsi untuk kelas ini."}
+                      </p>
+                    </div>
                   </div>
 
                   {/* Course Stats */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                     <div className="text-center">
                       <div className="text-2xl font-bold text-blue-600">{totalLessons}</div>
-                      <div className="text-sm text-gray-600">Lessons</div>
+                      <div className="text-sm text-gray-600">Pelajaran</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-green-600">{course.enrollments.length}</div>
-                      <div className="text-sm text-gray-600">Students</div>
+                      <div className="text-sm text-gray-600">Siswa</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-purple-600">
-                        {course.price === 0 ? 'Free' : `$${course.price}`}
+                        {course.price === 0 ? 'Gratis' : `$${course.price}`}
                       </div>
-                      <div className="text-sm text-gray-600">Price</div>
+                      <div className="text-sm text-gray-600">Harga</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-orange-600">
                         {Math.round(progressPercentage)}%
                       </div>
-                      <div className="text-sm text-gray-600">Complete</div>
+                      <div className="text-sm text-gray-600">Selesai</div>
                     </div>
                   </div>
 
                   {/* Lessons Preview */}
                   <div className="mb-6">
-                    <h3 className="text-xl font-bold mb-4">Course Content</h3>
+                    <h3 className="text-xl font-bold mb-4">Konten Kursus</h3>
                     <div className="space-y-2">
-                      {course.lessons.slice(0, 5).map((lesson, index) => {
-                        const isCompleted = progress.some(p => p.lessonId === lesson.id && p.completed)
+                      {course.lessons.slice(0, 5).map((lesson: any, index: number) => {
+                        const isCompleted = progress.some((p: any) => p.lessonId === lesson.id && p.completed)
                         const hasAccess = isEnrolled || isInstructor
 
                         return (
@@ -168,18 +185,18 @@ export default async function CoursePage({
                                   {lesson.title}
                                 </p>
                                 {lesson.videoUrl && (
-                                  <p className="text-sm text-gray-500">Video lesson</p>
+                                  <p className="text-sm text-gray-500">Video pembelajaran</p>
                                 )}
                               </div>
                             </div>
                             {hasAccess ? (
                               <Link href={`/courses/${id}/lessons/${lesson.id}`}>
                                 <Button variant="outline" size="sm">
-                                  {isCompleted ? 'Review' : 'Watch'}
+                                  {isCompleted ? 'Ulangi' : 'Tonton'}
                                 </Button>
                               </Link>
                             ) : (
-                              <div className="text-sm text-gray-500">🔒 Enroll to access</div>
+                              <div className="text-sm text-gray-500">🔒 Daftar untuk mengakses</div>
                             )}
                           </div>
                         )
@@ -188,7 +205,7 @@ export default async function CoursePage({
                       {course.lessons.length > 5 && (
                         <div className="text-center py-4">
                           <p className="text-gray-600">
-                            And {course.lessons.length - 5} more lessons...
+                            Dan {course.lessons.length - 5} pelajaran lainnya...
                           </p>
                         </div>
                       )}
@@ -200,9 +217,9 @@ export default async function CoursePage({
                 <div className="lg:col-span-1">
                   <Card className="sticky top-6">
                     <CardHeader>
-                      <CardTitle>Enrollment</CardTitle>
+                      <CardTitle>Pendaftaran</CardTitle>
                       <CardDescription>
-                        {isEnrolled ? 'You are enrolled in this course' : 'Join this course to start learning'}
+                        {isEnrolled ? 'Anda sudah terdaftar di kursus ini' : 'Bergabunglah dengan kursus ini untuk mulai belajar'}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -211,45 +228,66 @@ export default async function CoursePage({
                           {/* Progress */}
                           <div>
                             <div className="flex justify-between text-sm mb-2">
-                              <span>Your Progress</span>
+                              <span>Progress Anda</span>
                               <span>{Math.round(progressPercentage)}%</span>
                             </div>
                             <Progress value={progressPercentage} className="h-3" />
                             <p className="text-xs text-gray-600 mt-1">
-                              {completedLessons} of {totalLessons} lessons completed
+                              {completedLessons} dari {totalLessons} pelajaran selesai
                             </p>
                           </div>
 
                           <Link href={`/courses/${id}/lessons/${course.lessons[0]?.id}`}>
                             <Button className="w-full">
-                              {completedLessons === 0 ? 'Start Learning' : 'Continue Learning'}
+                              {completedLessons === 0 ? 'Mulai Belajar' : 'Lanjutkan Belajar'}
                             </Button>
                           </Link>
                         </div>
                       ) : (
                         <div className="space-y-4">
-                          {course.price === 0 ? (
-                            <Button className="w-full" id="enroll-btn">
-                              Enroll Now - Free
-                            </Button>
-                          ) : (
-                            <div className="space-y-4">
-                              <div className="text-center">
-                                <div className="text-3xl font-bold text-green-600">${course.price}</div>
-                                <div className="text-sm text-gray-600">One-time payment</div>
-                              </div>
-                              <Button className="w-full" id="purchase-btn">
-                                Purchase Course
+                          {/* Action Buttons */}
+                          <div className="space-y-3">
+                            {course.price === 0 ? (
+                              <Button className="w-full" id="enroll-btn">
+                                Daftar Sekarang - Gratis
                               </Button>
-                            </div>
-                          )}
+                            ) : (
+                              <div className="space-y-3">
+                                <div className="text-center">
+                                  <div className="text-3xl font-bold text-green-600">${course.price}</div>
+                                  <div className="text-sm text-gray-600">Pembayaran sekali</div>
+                                </div>
+
+                                {/* Buy Now Button */}
+                                <Button className="w-full bg-green-600 hover:bg-green-700" id="purchase-btn">
+                                  <CreditCard className="w-4 h-4 mr-2" />
+                                  Beli Sekarang
+                                </Button>
+
+                                {/* Add to Cart Button */}
+                                <AddToCartButton
+                                  courseId={course.id}
+                                  courseTitle={course.title}
+                                  isEnrolled={isEnrolled}
+                                  price={course.price}
+                                />
+
+                                {/* Add to Wishlist Button */}
+                                <AddToWishlistButton
+                                  courseId={course.id}
+                                  courseTitle={course.title}
+                                  isInWishlist={isInWishlist}
+                                />
+                              </div>
+                            )}
+                          </div>
 
                           {!session && (
                             <div className="text-center text-sm text-gray-600">
                               <Link href="/auth/signin" className="text-blue-600 hover:underline">
-                                Sign in
+                                Masuk
                               </Link>
-                              {' '}to enroll in courses
+                              {' '}untuk mendaftar kursus
                             </div>
                           )}
                         </div>

@@ -3,6 +3,8 @@
 import Link from 'next/link'
 import { useSession, signIn, signOut } from 'next-auth/react'
 import { Button } from './ui/Button'
+import { CartBadge } from './CartBadge'
+import { WishlistBadge } from './WishlistBadge'
 
 export function Navbar() {
   const { data: session, status } = useSession()
@@ -22,6 +24,10 @@ export function Navbar() {
               <div className="text-sm text-gray-500">Loading...</div>
             ) : session ? (
               <>
+                {/* Wishlist and Cart Icons with badges */}
+                <WishlistBadge />
+                <CartBadge />
+
                 <Link href="/dashboard" className="text-gray-700 hover:text-gray-900">
                   Dashboard
                 </Link>

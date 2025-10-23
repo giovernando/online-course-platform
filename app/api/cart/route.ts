@@ -12,7 +12,7 @@ export async function GET() {
     }
 
     const cartItems = await prisma.cartItem.findMany({
-      where: { userId: session.user.id },
+      where: { userId: (session.user as any).id },
       include: {
         course: {
           include: {
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
     const existingEnrollment = await prisma.enrollment.findUnique({
       where: {
         userId_courseId: {
-          userId: session.user.id,
+          userId: (session.user as any).id,
           courseId,
         },
       },
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     const existingCartItem = await prisma.cartItem.findUnique({
       where: {
         userId_courseId: {
-          userId: session.user.id,
+          userId: (session.user as any).id,
           courseId,
         },
       },
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
     // Add to cart
     const cartItem = await prisma.cartItem.create({
       data: {
-        userId: session.user.id,
+        userId: (session.user as any).id,
         courseId,
       },
       include: {
@@ -122,7 +122,7 @@ export async function DELETE(request: NextRequest) {
 
     await prisma.cartItem.deleteMany({
       where: {
-        userId: session.user.id,
+        userId: (session.user as any).id,
         courseId,
       },
     })
