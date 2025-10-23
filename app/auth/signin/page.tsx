@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/Input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card"
 import toast from "react-hot-toast"
 
-export default function LoginPage() {
+export default function SignInPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -111,7 +111,7 @@ export default function LoginPage() {
 
           <p className="mt-6 text-center text-sm text-gray-600">
             Don't have an account?{" "}
-            <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
               Sign up
             </Link>
           </p>

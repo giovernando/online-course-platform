@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/Button"
@@ -9,9 +8,11 @@ import { Input } from "@/components/ui/Input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card"
 import toast from "react-hot-toast"
 
-export default function LoginPage() {
+export default function SignUpPage() {
+  const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [role, setRole] = useState<"STUDENT" | "INSTRUCTOR">("STUDENT")
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
@@ -20,17 +21,25 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          role,
+        }),
       })
 
-      if (result?.error) {
-        toast.error("Invalid credentials")
+      if (response.ok) {
+        toast.success("Account created successfully!")
+        router.push("/auth/signin")
       } else {
-        toast.success("Logged in successfully!")
-        router.push("/dashboard")
+        const data = await response.json()
+        toast.error(data.message || "Something went wrong")
       }
     } catch (error) {
       toast.error("Something went wrong")
@@ -43,13 +52,26 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-center">Sign in</CardTitle>
+          <CardTitle className="text-2xl text-center">Create an account</CardTitle>
           <CardDescription className="text-center">
-            Enter your email and password to sign in to your account
+            Enter your information to create your account
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                Full Name
+              </label>
+              <Input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="mt-1"
+              />
+            </div>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email
@@ -76,43 +98,29 @@ export default function LoginPage() {
                 className="mt-1"
               />
             </div>
+            <div>
+              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+                I am a
+              </label>
+              <select
+                id="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value as "STUDENT" | "INSTRUCTOR")}
+                className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              >
+                <option value="STUDENT">Student</option>
+                <option value="INSTRUCTOR">Instructor</option>
+              </select>
+            </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Signing in..." : "Sign in"}
+              {isLoading ? "Creating account..." : "Create account"}
             </Button>
           </form>
 
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with</span>
-              </div>
-            </div>
-
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              <Button
-                variant="outline"
-                onClick={() => signIn("google")}
-                className="w-full"
-              >
-                Google
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => signIn("github")}
-                className="w-full"
-              >
-                GitHub
-              </Button>
-            </div>
-          </div>
-
           <p className="mt-6 text-center text-sm text-gray-600">
-            Don't have an account?{" "}
-            <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500">
-              Sign up
+            Already have an account?{" "}
+            <Link href="/auth/signin" className="font-medium text-blue-600 hover:text-blue-500">
+              Sign in
             </Link>
           </p>
         </CardContent>

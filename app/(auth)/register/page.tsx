@@ -36,7 +36,7 @@ export default function RegisterPage() {
 
       if (response.ok) {
         toast.success("Account created successfully!")
-        router.push("/auth/signin")
+        router.push("/login")
       } else {
         const data = await response.json()
         toast.error(data.message || "Something went wrong")

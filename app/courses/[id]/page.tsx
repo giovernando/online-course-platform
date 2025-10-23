@@ -14,7 +14,7 @@ async function getCourse(id: string) {
         select: { name: true },
       },
       lessons: {
-        orderBy: { createdAt: "asc" },
+        orderBy: { order: "asc" },
       },
       enrollments: true,
     },
@@ -25,10 +25,11 @@ async function getCourse(id: string) {
 export default async function CourseDetailPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
+  const { id } = await params
   const session = await getServerSession(authOptions)
-  const course = await getCourse(params.id)
+  const course = await getCourse(id)
 
   if (!course) {
     notFound()
