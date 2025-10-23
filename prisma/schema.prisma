@@ -51,6 +51,7 @@ model User {
   enrollments   Enrollment[]
   progress      Progress[]
   wishlist      Wishlist[]
+  cartItems     CartItem[]
 }
 
 model VerificationToken {
@@ -77,6 +78,7 @@ model Course {
   lessons     Lesson[]
   enrollments Enrollment[]
   wishlist    Wishlist[]
+  cartItems   CartItem[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -118,6 +120,17 @@ model Progress {
 }
 
 model Wishlist {
+  id       String   @id @default(cuid())
+  userId   String
+  courseId String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, courseId])
+}
+
+model CartItem {
   id       String   @id @default(cuid())
   userId   String
   courseId String
