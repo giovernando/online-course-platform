@@ -9,13 +9,14 @@ interface Course {
   description: string | null
   price: number
   thumbnail: string | null
+  category: string | null
   instructor: {
     name: string
   }
   enrollments: any[]
 }
 
-type FilterType = 'all' | 'free' | 'paid' | 'popular'
+type FilterType = 'all' | 'free' | 'paid' | 'popular' | 'business' | 'design' | 'marketing' | 'health' | 'music' | 'development'
 
 async function getCourses(): Promise<Course[]> {
   const response = await fetch('/api/courses')
@@ -64,6 +65,18 @@ export default function Home() {
         return [...filtered]
           .sort((a, b) => b.enrollments.length - a.enrollments.length)
           .slice(0, 6)
+      case 'business':
+        return filtered.filter(course => course.category?.toLowerCase() === 'business')
+      case 'design':
+        return filtered.filter(course => course.category?.toLowerCase() === 'design')
+      case 'marketing':
+        return filtered.filter(course => course.category?.toLowerCase() === 'marketing')
+      case 'health':
+        return filtered.filter(course => course.category?.toLowerCase() === 'health & fitness')
+      case 'music':
+        return filtered.filter(course => course.category?.toLowerCase() === 'music')
+      case 'development':
+        return filtered.filter(course => course.category?.toLowerCase() === 'development')
       case 'all':
       default:
         return filtered
@@ -84,6 +97,18 @@ export default function Home() {
         return 'Premium Courses'
       case 'popular':
         return 'Popular Courses'
+      case 'business':
+        return 'Business Courses'
+      case 'design':
+        return 'Design Courses'
+      case 'marketing':
+        return 'Marketing Courses'
+      case 'health':
+        return 'Health & Fitness Courses'
+      case 'music':
+        return 'Music Courses'
+      case 'development':
+        return 'Development Courses'
       case 'all':
       default:
         return 'All Courses'
@@ -102,6 +127,18 @@ export default function Home() {
         return { text: `${filteredCourses.length} courses`, color: 'bg-purple-100 text-purple-800' }
       case 'popular':
         return { text: 'Most Enrolled', color: 'bg-orange-100 text-orange-800' }
+      case 'business':
+        return { text: `${filteredCourses.length} courses`, color: 'bg-indigo-100 text-indigo-800' }
+      case 'design':
+        return { text: `${filteredCourses.length} courses`, color: 'bg-pink-100 text-pink-800' }
+      case 'marketing':
+        return { text: `${filteredCourses.length} courses`, color: 'bg-yellow-100 text-yellow-800' }
+      case 'health':
+        return { text: `${filteredCourses.length} courses`, color: 'bg-red-100 text-red-800' }
+      case 'music':
+        return { text: `${filteredCourses.length} courses`, color: 'bg-purple-100 text-purple-800' }
+      case 'development':
+        return { text: `${filteredCourses.length} courses`, color: 'bg-blue-100 text-blue-800' }
       case 'all':
       default:
         return { text: `${filteredCourses.length} courses`, color: 'bg-blue-100 text-blue-800' }
@@ -210,6 +247,84 @@ export default function Home() {
           >
             Popular Courses
           </button>
+          <button
+            className={`px-6 py-3 rounded-full border-2 transition-all duration-300 ${
+              activeFilter === 'business' && !searchQuery
+                ? 'bg-indigo-600 text-white border-indigo-600'
+                : 'border-gray-300 hover:bg-indigo-50 hover:border-indigo-300'
+            }`}
+            onClick={() => {
+              setActiveFilter('business')
+              setSearchQuery('')
+            }}
+          >
+            Business ({courses.filter(c => c.category?.toLowerCase() === 'business').length})
+          </button>
+          <button
+            className={`px-6 py-3 rounded-full border-2 transition-all duration-300 ${
+              activeFilter === 'design' && !searchQuery
+                ? 'bg-pink-600 text-white border-pink-600'
+                : 'border-gray-300 hover:bg-pink-50 hover:border-pink-300'
+            }`}
+            onClick={() => {
+              setActiveFilter('design')
+              setSearchQuery('')
+            }}
+          >
+            Design ({courses.filter(c => c.category?.toLowerCase() === 'design').length})
+          </button>
+          <button
+            className={`px-6 py-3 rounded-full border-2 transition-all duration-300 ${
+              activeFilter === 'marketing' && !searchQuery
+                ? 'bg-yellow-600 text-white border-yellow-600'
+                : 'border-gray-300 hover:bg-yellow-50 hover:border-yellow-300'
+            }`}
+            onClick={() => {
+              setActiveFilter('marketing')
+              setSearchQuery('')
+            }}
+          >
+            Marketing ({courses.filter(c => c.category?.toLowerCase() === 'marketing').length})
+          </button>
+          <button
+            className={`px-6 py-3 rounded-full border-2 transition-all duration-300 ${
+              activeFilter === 'health' && !searchQuery
+                ? 'bg-red-600 text-white border-red-600'
+                : 'border-gray-300 hover:bg-red-50 hover:border-red-300'
+            }`}
+            onClick={() => {
+              setActiveFilter('health')
+              setSearchQuery('')
+            }}
+          >
+            Health & Fitness ({courses.filter(c => c.category?.toLowerCase() === 'health & fitness').length})
+          </button>
+          <button
+            className={`px-6 py-3 rounded-full border-2 transition-all duration-300 ${
+              activeFilter === 'music' && !searchQuery
+                ? 'bg-purple-600 text-white border-purple-600'
+                : 'border-gray-300 hover:bg-purple-50 hover:border-purple-300'
+            }`}
+            onClick={() => {
+              setActiveFilter('music')
+              setSearchQuery('')
+            }}
+          >
+            Music ({courses.filter(c => c.category?.toLowerCase() === 'music').length})
+          </button>
+          <button
+            className={`px-6 py-3 rounded-full border-2 transition-all duration-300 ${
+              activeFilter === 'development' && !searchQuery
+                ? 'bg-teal-600 text-white border-teal-600'
+                : 'border-gray-300 hover:bg-teal-50 hover:border-teal-300'
+            }`}
+            onClick={() => {
+              setActiveFilter('development')
+              setSearchQuery('')
+            }}
+          >
+            Development ({courses.filter(c => c.category?.toLowerCase() === 'development').length})
+          </button>
         </div>
 
         {/* Filtered Courses Section */}
@@ -231,12 +346,24 @@ export default function Home() {
                       ? 'No premium courses available yet.'
                       : activeFilter === 'popular'
                         ? 'No courses available yet.'
-                        : 'No courses available yet.'
+                        : activeFilter === 'business'
+                          ? 'No business courses available yet.'
+                          : activeFilter === 'design'
+                            ? 'No design courses available yet.'
+                            : activeFilter === 'marketing'
+                              ? 'No marketing courses available yet.'
+                              : activeFilter === 'health'
+                                ? 'No health & fitness courses available yet.'
+                                : activeFilter === 'music'
+                                  ? 'No music courses available yet.'
+                                  : activeFilter === 'development'
+                                    ? 'No development courses available yet.'
+                                    : 'No courses available yet.'
                 }
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
               {filteredCourses.map((course) => (
                 <CourseCard
                   key={course.id}

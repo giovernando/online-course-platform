@@ -34,72 +34,77 @@ async function main() {
   console.log('✅ Users created:', { instructor: instructor.id, student: student.id })
 
   // Create courses
-  const course1 = await prisma.course.upsert({
-    where: { id: 'course-1' },
-    update: {},
-    create: {
+  const courses = [
+    // Development (10 courses)
+    {
       id: 'course-1',
       title: 'Belajar React untuk Pemula',
       description: 'Pelajari dasar-dasar React dengan proyek praktis. Kursus ini cocok untuk pemula yang ingin memahami konsep fundamental React.',
       price: 0,
       thumbnail: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=400&fit=crop',
-      instructorId: instructor.id,
+      category: 'Development',
     },
-  })
-
-  const course2 = await prisma.course.upsert({
-    where: { id: 'course-2' },
-    update: {},
-    create: {
+    {
       id: 'course-2',
       title: 'Next.js Advanced Course',
       description: 'Kuasai Next.js dengan fitur-fitur advanced seperti SSR, SSG, API Routes, dan deployment.',
       price: 49.99,
       thumbnail: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&h=400&fit=crop',
-      instructorId: instructor.id,
+      category: 'Development',
     },
-  })
-
-  const course3 = await prisma.course.upsert({
-    where: { id: 'course-3' },
-    update: {},
-    create: {
+    {
       id: 'course-3',
       title: 'TypeScript Mastery',
       description: 'Pelajari TypeScript dari nol hingga mahir. Tingkatkan kualitas kode Anda dengan type safety.',
       price: 39.99,
       thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=400&fit=crop',
-      instructorId: instructor.id,
+      category: 'Development',
     },
-  })
-
-  const course4 = await prisma.course.upsert({
-    where: { id: 'course-4' },
-    update: {},
-    create: {
+    {
       id: 'course-4',
       title: 'Node.js Backend Development',
       description: 'Bangun backend yang powerful dengan Node.js, Express, dan MongoDB. Pelajari REST APIs dan authentication.',
       price: 59.99,
       thumbnail: 'https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=800&h=400&fit=crop',
-      instructorId: instructor.id,
+      category: 'Development',
     },
-  })
-
-  const course5 = await prisma.course.upsert({
-    where: { id: 'course-5' },
-    update: {},
-    create: {
+    {
       id: 'course-5',
-      title: 'UI/UX Design Fundamentals',
-      description: 'Pelajari prinsip-prinsip desain UI/UX yang efektif. Dari wireframing hingga prototyping dengan Figma.',
-      price: 29.99,
-      thumbnail: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=400&fit=crop',
-      instructorId: instructor.id,
+      title: 'Python untuk Data Science',
+      description: 'Mulai perjalanan Anda di data science dengan Python. Pelajari pandas, numpy, dan matplotlib.',
+      price: 69.99,
+      thumbnail: 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=800&h=400&fit=crop',
+      category: 'Development',
     },
-  })
-
-  const course6 = await prisma.course.upsert({
+    {
+      id: 'course-6',
+      title: 'JavaScript Fundamentals',
+      description: 'Pelajari JavaScript dari dasar hingga advanced. Kursus komprehensif untuk menjadi developer JavaScript yang handal.',
+      price: 29.99,
+      thumbnail: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=800&h=400&fit=crop',
+      category: 'Development',
+    },
+    {
+      id: 'course-7',
+      title: 'Vue.js Complete Guide',
+      description: 'Master Vue.js dari awal hingga production-ready. Pelajari Vue 3, Composition API, dan ecosystem Vue.',
+      price: 44.99,
+      thumbnail: 'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?w=800&h=400&fit=crop',
+      category: 'Development',
+    },
+    {
+      id: 'course-8',
+      title: 'Angular Masterclass',
+      description: 'Pelajari Angular framework secara mendalam. Dari components hingga state management dengan NgRx.',
+      price: 54.99,
+      thumbnail: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800&h=400&fit=crop',
+      category: 'Development',
+    },
+    {
+      id: 'course-9',
+      title: 'Full Stack Web Development',
+      description: 'Jadi full stack developer dengan MERN stack. Pelajari MongoDB, Express, React, dan Node.js.',
+      price: 79.99,
     where: { id: 'course-6' },
     update: {},
     create: {
@@ -108,6 +113,63 @@ async function main() {
       description: 'Mulai perjalanan Anda di data science dengan Python. Pelajari pandas, numpy, dan matplotlib.',
       price: 69.99,
       thumbnail: 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=800&h=400&fit=crop',
+      category: 'Development',
+      instructorId: instructor.id,
+    },
+  })
+
+  const course7 = await prisma.course.upsert({
+    where: { id: 'course-7' },
+    update: {},
+    create: {
+      id: 'course-7',
+      title: 'Digital Marketing Mastery',
+      description: 'Pelajari strategi digital marketing yang efektif. Dari SEO hingga social media marketing.',
+      price: 45.99,
+      thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop',
+      category: 'Marketing',
+      instructorId: instructor.id,
+    },
+  })
+
+  const course8 = await prisma.course.upsert({
+    where: { id: 'course-8' },
+    update: {},
+    create: {
+      id: 'course-8',
+      title: 'Business Strategy & Entrepreneurship',
+      description: 'Kembangkan kemampuan bisnis Anda. Pelajari strategi bisnis, entrepreneurship, dan manajemen.',
+      price: 79.99,
+      thumbnail: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=400&fit=crop',
+      category: 'Business',
+      instructorId: instructor.id,
+    },
+  })
+
+  const course9 = await prisma.course.upsert({
+    where: { id: 'course-9' },
+    update: {},
+    create: {
+      id: 'course-9',
+      title: 'Music Production with Logic Pro',
+      description: 'Pelajari produksi musik profesional dengan Logic Pro. Dari recording hingga mixing dan mastering.',
+      price: 89.99,
+      thumbnail: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=400&fit=crop',
+      category: 'Music',
+      instructorId: instructor.id,
+    },
+  })
+
+  const course10 = await prisma.course.upsert({
+    where: { id: 'course-10' },
+    update: {},
+    create: {
+      id: 'course-10',
+      title: 'Fitness & Nutrition Guide',
+      description: 'Panduan lengkap untuk hidup sehat. Pelajari olahraga dan nutrisi yang tepat untuk tubuh Anda.',
+      price: 34.99,
+      thumbnail: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=400&fit=crop',
+      category: 'Health & Fitness',
       instructorId: instructor.id,
     },
   })
@@ -119,6 +181,10 @@ async function main() {
     course4: course4.id,
     course5: course5.id,
     course6: course6.id,
+    course7: course7.id,
+    course8: course8.id,
+    course9: course9.id,
+    course10: course10.id,
   })
 
   // Create lessons for course 1
@@ -215,12 +281,16 @@ async function main() {
   console.log('Student: student@example.com / password123')
   console.log('')
   console.log('📚 Available Courses:')
-  console.log('- Belajar React untuk Pemula (Free)')
-  console.log('- Next.js Advanced Course ($49.99)')
-  console.log('- TypeScript Mastery ($39.99)')
-  console.log('- Node.js Backend Development ($59.99)')
-  console.log('- UI/UX Design Fundamentals ($29.99)')
-  console.log('- Python untuk Data Science ($69.99)')
+  console.log('- Belajar React untuk Pemula (Free) - Development')
+  console.log('- Next.js Advanced Course ($49.99) - Development')
+  console.log('- TypeScript Mastery ($39.99) - Development')
+  console.log('- Node.js Backend Development ($59.99) - Development')
+  console.log('- UI/UX Design Fundamentals ($29.99) - Design')
+  console.log('- Python untuk Data Science ($69.99) - Development')
+  console.log('- Digital Marketing Mastery ($45.99) - Marketing')
+  console.log('- Business Strategy & Entrepreneurship ($79.99) - Business')
+  console.log('- Music Production with Logic Pro ($89.99) - Music')
+  console.log('- Fitness & Nutrition Guide ($34.99) - Health & Fitness')
 }
 
 main()

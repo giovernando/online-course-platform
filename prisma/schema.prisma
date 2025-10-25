@@ -73,6 +73,7 @@ model Course {
   description String?
   price       Float    @default(0)
   thumbnail   String?
+  category    String?  @default("Development")
   instructorId String
   instructor  User     @relation(fields: [instructorId], references: [id])
   lessons     Lesson[]
