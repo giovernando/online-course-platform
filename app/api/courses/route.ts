@@ -3,9 +3,37 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url)
+    const category = searchParams.get('category')
+    const search = searchParams.get('search')
+
+    let whereClause: any = {}
+
+    if (category) {
+      whereClause.category = category
+    }
+
+    if (search) {
+      whereClause.OR = [
+        {
+          title: {
+            contains: search,
+            mode: 'insensitive'
+          }
+        },
+        {
+          description: {
+            contains: search,
+            mode: 'insensitive'
+          }
+        }
+      ]
+    }
+
     const courses = await prisma.course.findMany({
+      where: whereClause,
       include: {
         instructor: {
           select: {
@@ -26,7 +54,7 @@ export async function GET() {
       orderBy: {
         createdAt: "desc",
       },
-      take: 20, // Limit to 20 courses for faster loading
+      take: 50, // Increased limit for better filtering results
     })
 
     // Add category field to each course (since it's not included in the select)
@@ -35,7 +63,7 @@ export async function GET() {
       category: course.category || 'Uncategorized', // Fallback for courses without category
     }))
 
-    return NextResponse.json(coursesWithCategory)
+    return NextResponse.json({ courses: coursesWithCategory })
   } catch (error) {
     console.error("Error fetching courses:", error)
     return NextResponse.json(

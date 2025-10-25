@@ -81,7 +81,7 @@ export function CategoryNavbar() {
   return (
     <nav
       ref={navbarRef}
-      className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 shadow-sm relative z-40"
+      className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 shadow-sm relative z-30"
       style={{
         background: 'rgba(255, 255, 255, 0.8)',
         backdropFilter: 'blur(12px)',
@@ -112,7 +112,7 @@ export function CategoryNavbar() {
 
               {/* Development Dropdown Menu */}
               {openDropdown === 'development' && (
-                <div className="absolute top-full left-0 mt-1 w-56 bg-white/95 backdrop-blur-sm border border-gray-200/50 rounded-md shadow-lg z-50">
+                <div className="absolute top-full left-0 mt-1 w-56 bg-white/95 backdrop-blur-sm border border-gray-200/50 rounded-md shadow-lg z-40">
                   <div className="py-1">
                     {developmentCategories.map((category) => (
                       <Link
@@ -150,7 +150,7 @@ export function CategoryNavbar() {
 
               {/* Business Dropdown Menu */}
               {openDropdown === 'business' && (
-                <div className="absolute top-full left-0 mt-1 w-56 bg-white/95 backdrop-blur-sm border border-gray-200/50 rounded-md shadow-lg z-50">
+                <div className="absolute top-full left-0 mt-1 w-56 bg-white/95 backdrop-blur-sm border border-gray-200/50 rounded-md shadow-lg z-40">
                   <div className="py-1">
                     {businessCategories.map((category) => (
                       <Link
@@ -188,7 +188,7 @@ export function CategoryNavbar() {
 
               {/* Design Dropdown Menu */}
               {openDropdown === 'design' && (
-                <div className="absolute top-full left-0 mt-1 w-56 bg-white/95 backdrop-blur-sm border border-gray-200/50 rounded-md shadow-lg z-50">
+                <div className="absolute top-full left-0 mt-1 w-56 bg-white/95 backdrop-blur-sm border border-gray-200/50 rounded-md shadow-lg z-40">
                   <div className="py-1">
                     {designCategories.map((category) => (
                       <Link
@@ -226,7 +226,7 @@ export function CategoryNavbar() {
 
               {/* Marketing Dropdown Menu */}
               {openDropdown === 'marketing' && (
-                <div className="absolute top-full left-0 mt-1 w-56 bg-white/95 backdrop-blur-sm border border-gray-200/50 rounded-md shadow-lg z-50">
+                <div className="absolute top-full left-0 mt-1 w-56 bg-white/95 backdrop-blur-sm border border-gray-200/50 rounded-md shadow-lg z-40">
                   <div className="py-1">
                     {marketingCategories.map((category) => (
                       <Link
@@ -264,7 +264,7 @@ export function CategoryNavbar() {
 
               {/* Health & Fitness Dropdown Menu */}
               {openDropdown === 'health' && (
-                <div className="absolute top-full left-0 mt-1 w-56 bg-white/95 backdrop-blur-sm border border-gray-200/50 rounded-md shadow-lg z-50">
+                <div className="absolute top-full left-0 mt-1 w-56 bg-white/95 backdrop-blur-sm border border-gray-200/50 rounded-md shadow-lg z-40">
                   <div className="py-1">
                     {healthCategories.map((category) => (
                       <Link
@@ -302,7 +302,7 @@ export function CategoryNavbar() {
 
               {/* Music Dropdown Menu */}
               {openDropdown === 'music' && (
-                <div className="absolute top-full left-0 mt-1 w-56 bg-white/95 backdrop-blur-sm border border-gray-200/50 rounded-md shadow-lg z-50">
+                <div className="absolute top-full left-0 mt-1 w-56 bg-white/95 backdrop-blur-sm border border-gray-200/50 rounded-md shadow-lg z-40">
                   <div className="py-1">
                     {musicCategories.map((category) => (
                       <Link

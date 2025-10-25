@@ -55,7 +55,7 @@ export function CourseCard({ id, title, description, price, thumbnail, instructo
 
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <p className="text-xs text-gray-500 font-medium">By {instructor.name}</p>
+              <p className="text-xs text-gray-500 font-medium">By {instructor?.name || 'Unknown Instructor'}</p>
               <p className="text-lg font-bold text-green-600 group-hover:text-green-700 transition-colors duration-300">
                 {price === 0 ? 'Free' : `$${price}`}
               </p>
