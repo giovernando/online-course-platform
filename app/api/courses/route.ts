@@ -26,6 +26,7 @@ export async function GET() {
       orderBy: {
         createdAt: "desc",
       },
+      take: 20, // Limit to 20 courses for faster loading
     })
 
     // Add category field to each course (since it's not included in the select)

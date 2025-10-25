@@ -73,14 +73,14 @@ export default function AddToWishlistButton({
   return (
     <Button
       variant="outline"
-      className={`w-full ${inWishlist ? 'border-red-500 text-red-500 hover:bg-red-50' : ''}`}
+      size="sm"
+      className={`p-2 ${inWishlist ? 'border-red-500 text-red-500 hover:bg-red-50' : 'border-gray-300 hover:border-gray-400'}`}
       onClick={handleToggleWishlist}
       disabled={isLoading}
     >
       <Heart
-        className={`w-4 h-4 mr-2 ${inWishlist ? 'fill-current' : ''}`}
+        className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`}
       />
-      {isLoading ? 'Memproses...' : inWishlist ? 'Hapus dari Wishlist' : 'Tambah ke Wishlist'}
     </Button>
   )
 }

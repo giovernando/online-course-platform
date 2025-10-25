@@ -2,6 +2,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/Card'
 import { Button } from './ui/Button'
+import AddToCartButton from './AddToCartButton'
+import AddToWishlistButton from './AddToWishlistButton'
 
 interface CourseCardProps {
   id: string
@@ -60,11 +62,18 @@ export function CourseCard({ id, title, description, price, thumbnail, instructo
             </div>
           </div>
 
-          <Link href={`/courses/${id}`} className="block">
-            <Button className="w-full bg-blue-600/90 hover:bg-blue-600 text-white backdrop-blur-sm border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105 group-hover:bg-blue-500">
-              View Course
-            </Button>
-          </Link>
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <Link href={`/courses/${id}`} className="flex-1">
+                <Button className="w-full bg-blue-600/90 hover:bg-blue-600 text-white backdrop-blur-sm border border-white/20 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105 group-hover:bg-blue-500">
+                  View Course
+                </Button>
+              </Link>
+              <AddToWishlistButton courseId={id} courseTitle={title} />
+            </div>
+
+            <AddToCartButton courseId={id} courseTitle={title} price={price} />
+          </div>
         </div>
       </div>
 
