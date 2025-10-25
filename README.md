@@ -4,14 +4,14 @@ A modern, full-featured online course platform built with Next.js 14, TypeScript
 
 ## Features
 
-- 🔐 **Authentication**: NextAuth.js with Google, GitHub, and credentials login
-- 👨‍🏫 **Role-based Access**: Instructor and Student roles
-- 📚 **Course Management**: Create, view, and manage courses
-- 🎥 **Video Lessons**: Upload and watch video content
-- 📊 **Progress Tracking**: Track learning progress
-- 💳 **Payments**: Stripe integration for paid courses
-- 🎨 **Modern UI**: Responsive design with Tailwind CSS
-- 📱 **Mobile Friendly**: Works great on all devices
+-  **Authentication**: NextAuth.js with Google, GitHub, and credentials login
+-  **Role-based Access**: Instructor and Student roles
+-  **Course Management**: Create, view, and manage courses
+-  **Video Lessons**: Upload and watch video content
+-  **Progress Tracking**: Track learning progress
+-  **Payments**: Stripe integration for paid courses
+-  **Modern UI**: Responsive design with Tailwind CSS
+-  **Mobile Friendly**: Works great on all devices
 
 ## Tech Stack
 
@@ -78,74 +78,6 @@ npx prisma migrate dev --name init
 ```bash
 npm run dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Project Structure
-
-```
-app/
-├── (auth)/
-│   ├── login/page.tsx
-│   └── register/page.tsx
-├── api/
-│   ├── auth/
-│   │   ├── [...nextauth]/route.ts
-│   │   └── register/route.ts
-│   └── courses/route.ts
-├── courses/[id]/page.tsx
-├── dashboard/page.tsx
-├── instructor/create/page.tsx
-├── layout.tsx
-├── page.tsx
-└── not-found.tsx
-
-components/
-├── ui/
-│   ├── Button.tsx
-│   ├── Card.tsx
-│   ├── Input.tsx
-│   └── ...
-├── CourseCard.tsx
-├── Navbar.tsx
-└── ...
-
-lib/
-├── auth.ts
-├── prisma.ts
-└── utils.ts
-
-prisma/
-├── schema.prisma
-└── ...
-
-public/
-└── ...
-```
-
-## Database Schema
-
-- **User**: id, name, email, password, role
-- **Course**: id, title, description, price, thumbnail, instructorId
-- **Lesson**: id, title, videoUrl, courseId
-- **Enrollment**: id, userId, courseId, createdAt
-- **Progress**: id, userId, lessonId, completed
-
-## API Routes
-
-- `GET/POST /api/courses` - Course CRUD operations
-- `POST /api/auth/register` - User registration
-- `GET/POST /api/lessons` - Lesson management
-- `POST /api/enroll` - Course enrollment
-- `PATCH /api/progress` - Progress updates
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
 
 ## License
 
