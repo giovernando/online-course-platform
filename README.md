@@ -4,14 +4,14 @@ A modern, full-featured online course platform built with Next.js 14, TypeScript
 
 ## Features
 
-- 🔐 **Authentication**: NextAuth.js with Google, GitHub, and credentials login
-- 👨‍🏫 **Role-based Access**: Instructor and Student roles
-- 📚 **Course Management**: Create, view, and manage courses
-- 🎥 **Video Lessons**: Upload and watch video content
-- 📊 **Progress Tracking**: Track learning progress
-- 💳 **Payments**: Stripe integration for paid courses
-- 🎨 **Modern UI**: Responsive design with Tailwind CSS
-- 📱 **Mobile Friendly**: Works great on all devices
+-  **Authentication**: NextAuth.js with Google, GitHub, and credentials login
+-  **Role-based Access**: Instructor and Student roles
+-  **Course Management**: Create, view, and manage courses
+-  **Video Lessons**: Upload and watch video content
+-  **Progress Tracking**: Track learning progress
+-  **Payments**: Stripe integration for paid courses
+-  **Modern UI**: Responsive design with Tailwind CSS
+-  **Mobile Friendly**: Works great on all devices
 
 ## Tech Stack
 
