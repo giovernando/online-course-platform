@@ -1,4 +1,4 @@
-# Online Course Platform
+# Online Course Platform (LMS)
 
 A modern, full-featured online course platform built with Next.js 14, TypeScript, and Tailwind CSS.
 
