@@ -24,8 +24,6 @@ A modern, full-featured online course platform built with Next.js 14, TypeScript
 - **UI Components**: Custom components with class-variance-authority
 - **Notifications**: React Hot Toast
 
-## Getting Started
-
 ### Prerequisites
 
 - Node.js 18+
